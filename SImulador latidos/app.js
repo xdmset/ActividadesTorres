@@ -1,27 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    const userProfiles = {
-        sedentario: {
-            reposo: [70, 85],
-            caminar: [95, 115],
-            correr: [140, 160],
-            dormir: [60, 75]
-        },
-        activo: {
-            reposo: [60, 75],
-            caminar: [90, 110],
-            correr: [150, 175],
-            dormir: [50, 65]
-        },
-        atleta: {
-            reposo: [45, 60],
-            caminar: [80, 100],
-            correr: [160, 185],
-            dormir: [40, 55]
-        }
+    // --- RANGOS SEGÚN EL ESTADO ---
+    const stateRanges = {
+        reposo: [65, 80],
+        caminar: [95, 115],
+        correr: [140, 170],
+        dormir: [55, 70]
     };
 
-    let currentProfile = 'sedentario';
     let currentState = 'reposo';
     let currentBPM = 75;
     let isAutoMode = false;
@@ -34,13 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateHeartRate() {
-        const profileRanges = userProfiles[currentProfile];
-        const targetRange = profileRanges[currentState];
+        const targetRange = stateRanges[currentState];
 
         if (currentState === 'reposo') {
             const prob = Math.random();
             if (prob < 0.5) {
-                // 50% mantener igual
+                // Mantener igual
             } else if (prob < 0.75) {
                 currentBPM = Math.max(targetRange[0], currentBPM - getRandomInRange(2, 5));
             } else {
@@ -54,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const timestamp = new Date().toLocaleTimeString();
-        console.log(`[${timestamp}] Perfil: ${currentProfile}, Estado: ${currentState}, BPM: ${currentBPM}`);
+        console.log(`[${timestamp}] Estado: ${currentState}, BPM: ${currentBPM}`);
         updateChart(currentBPM);
     }
 
@@ -87,21 +72,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // === Gráfica Highcharts ===
     const chart = Highcharts.chart('chart-container', {
         title: { text: 'Simulación de Ritmo Cardíaco (BPM)' },
-        xAxis: {
-            type: 'datetime',
-            title: { text: 'Tiempo' }
-        },
-        yAxis: {
-            title: { text: 'Pulsaciones por Minuto (BPM)' },
-            min: 30
-        },
-        series: [{
-            name: 'Ritmo Cardíaco',
-            data: [],
-            tooltip: { valueSuffix: ' BPM' }
-        }],
+        xAxis: { type: 'datetime', title: { text: 'Tiempo' } },
+        yAxis: { title: { text: 'Pulsaciones por Minuto (BPM)' }, min: 30 },
+        series: [{ name: 'Ritmo Cardíaco', data: [], tooltip: { valueSuffix: ' BPM' } }],
         credits: { enabled: false }
     });
 
@@ -111,21 +87,16 @@ document.addEventListener('DOMContentLoaded', function () {
         series.addPoint({ x: new Date().getTime(), y: bpm }, true, shift);
     }
 
-    document.getElementById('profile-select').addEventListener('change', (e) => {
-        currentProfile = e.target.value;
-        currentState = 'reposo';
-        currentBPM = userProfiles[currentProfile].reposo[0];
-        console.log(`--- Perfil cambiado a: ${currentProfile} ---`);
-    });
-
+    // === Botones de control ===
     document.getElementById('btn-reposo').addEventListener('click', () => { currentState = 'reposo'; console.log('EVENTO: Reposo'); });
     document.getElementById('btn-caminar').addEventListener('click', () => { currentState = 'caminar'; console.log('EVENTO: Inicia Caminata'); });
     document.getElementById('btn-correr').addEventListener('click', () => { currentState = 'correr'; console.log('EVENTO: Inicia Carrera'); });
     document.getElementById('btn-dormir').addEventListener('click', () => { currentState = 'dormir'; console.log('EVENTO: A dormir'); });
 
+    // === Modo automático ===
     document.getElementById('auto-mode-toggle').addEventListener('change', (e) => {
         isAutoMode = e.target.checked;
-        const manualButtons = document.querySelectorAll('#controls button, #profile-select');
+        const manualButtons = document.querySelectorAll('#controls button');
         if (isAutoMode) {
             console.log("--- MODO AUTOMÁTICO ACTIVADO ---");
             manualButtons.forEach(el => el.disabled = true);
@@ -135,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Intervalo de simulación
     setInterval(() => {
         if (isAutoMode) {
             setAutomaticState();
