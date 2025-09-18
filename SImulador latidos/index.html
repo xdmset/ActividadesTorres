@@ -1,91 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Ritmo Cardíaco</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        h1 {
-            color: #1a73e8;
-        }
-
-        #app-container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #controls, #auto-mode {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        button {
-            margin: 5px;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            border: 1px solid transparent;
-            background-color: #1a73e8;
-            color: white;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #155ab6;
-        }
-
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Ritmo Cardíaco</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
 
-<div id="app-container">
-    <h1>Simulador de Ritmo Cardíaco para WearOS </h1>
+  <div id="app-container">
+    <h1>Simulador de Ritmo Cardíaco para WearOS</h1>
 
     <div id="controls">
-        
-        <p>Control Manual de Actividad:</p>
-        <button id="btn-reposo">Reposo</button>
-        <button id="btn-caminar">Caminar</button>
-        <button id="btn-correr">Correr</button>
-        <button id="btn-dormir">Dormir</button>
+      <p><strong>Actividad actual:</strong> <span id="current-activity">Reposo</span></p>
+      <p id="time-display">Hora actual: --:--:--</p>
+
+      <label>
+        Modo manual:
+        <input type="checkbox" id="manual-toggle">
+      </label>
+      <input type="time" id="manual-time" disabled>
+      <button id="btn-set-manual" disabled>Establecer hora manual</button>
+
+      <br>
+      <button id="btn-ver-rutina">Ver Rutina</button>
     </div>
 
-   
+    <div id="routine-display">
+      <h3>Rutina Diaria</h3>
+      <ul id="routine-list"></ul>
+    </div>
 
     <div id="chart-container" style="width:100%; height:400px;"></div>
-</div>
+  </div>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="app.js"></script>
-
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="./app.js"></script>
 </body>
+
 </html>
