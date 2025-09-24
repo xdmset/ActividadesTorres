@@ -13,6 +13,15 @@
   <div id="app-container">
     <h1>Simulador de Ritmo Cardíaco para WearOS</h1>
 
+    <div id="profile-selector">
+      <label for="profile-select"><strong>Seleccionar Perfil:</strong></label>
+      <select id="profile-select">
+        <option value="normal" selected>Persona Normal</option>
+        <option value="atleta">Atleta Joven</option>
+        <option value="mayor">Persona Mayor</option>
+      </select>
+    </div>
+
     <div id="controls">
       <p><strong>Actividad actual:</strong> <span id="current-activity">Reposo</span></p>
       <p id="time-display">Hora actual: --:--:--</p>
